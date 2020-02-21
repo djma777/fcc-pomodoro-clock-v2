@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import {
+  useCountdownTimer,
+  useTimeLeft,
+  usePhaseShifter,
+  useAbsoluteZero
+} from "./Hooks";
 
 import { GlobalStyles } from "./GlobalStyles";
 import {
@@ -13,7 +20,7 @@ import {
 } from "./components";
 
 function App() {
-  const [phase, setPhase] = useState("Session");
+  const [phase, setPhase] = useState(true);
 
   const [sessionLength, setSessionLength] = useState(1500);
 
@@ -21,21 +28,22 @@ function App() {
 
   const [play, setPlay] = useState(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (play) {
-        if (phase === "Session") {
-          setSessionLength(sL => sL - 1);
-        } else {
-          setBreakLength(bL => bL - 1);
-        }
-      }
-    }, 1000);
+  const [timeLeft, setTimeLeft] = useState(1500);
 
-    return () => clearInterval(timer);
-  }, [play, phase]);
+  const [shifting, setShifting] = useState(false);
 
-  console.log(play, sessionLength);
+  useCountdownTimer(play, phase, setTimeLeft);
+  useTimeLeft(timeLeft, setTimeLeft, play, phase, sessionLength, breakLength);
+  usePhaseShifter(phase, setPhase, play, setPlay, timeLeft, setShifting);
+
+  useAbsoluteZero(shifting, setShifting, setPlay);
+
+  console.log(
+    "phase " + phase,
+    "play " + play,
+    "sessionLength " + sessionLength,
+    "timeLeft " + timeLeft
+  );
 
   return (
     <>
@@ -89,6 +97,7 @@ function App() {
           setPhase={setPhase}
           sessionLength={sessionLength}
           breakLength={breakLength}
+          timeLeft={timeLeft}
         />
         <BottomControlsWrapper>
           <Button id="start_stop" play={play} setPlay={setPlay}>
@@ -99,12 +108,11 @@ function App() {
           </Button>
           <Button
             id="reset"
-            breakLength={breakLength}
-            sessionLength={sessionLength}
             setBreakLength={setBreakLength}
             setSessionLength={setSessionLength}
             setPlay={setPlay}
             play={play}
+            setPhase={setPhase}
           >
             reset
           </Button>

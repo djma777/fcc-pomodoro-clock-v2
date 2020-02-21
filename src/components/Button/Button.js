@@ -11,7 +11,7 @@ const Button = ({
   setSessionLength,
   play,
   setPlay,
-  handleStartStop
+  setPhase
 }) => {
   const handleClick = e => {
     switch (id) {
@@ -34,14 +34,16 @@ const Button = ({
         setSessionLength(sessionLength - 60);
         break;
       case "reset":
-        setSessionLength((sessionLength = 1500));
-        setBreakLength((breakLength = 300));
-        setPlay((play = false));
+        setSessionLength(1500);
+        setBreakLength(300);
+        setPhase(true);
+        setPlay(false);
         break;
       case "start_stop":
         setPlay(!play);
         break;
       case "pause":
+        if (!play) return;
         setPlay((play = false));
         break;
       default:

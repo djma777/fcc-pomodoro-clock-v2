@@ -2,20 +2,10 @@ import React from "react";
 
 import { StyledTimerWrapper } from "./TimerWrapper.styled";
 
-const TimerWrapper = ({
-  phase,
-
-  sessionLength,
-  breakLength
-}) => {
-  const timer = phase => {
-    let minutes = Math.floor(
-      phase === "Session" ? sessionLength / 60 : breakLength / 60
-    );
-    let seconds =
-      phase === "Session"
-        ? sessionLength - minutes * 60
-        : breakLength - minutes * 60;
+const TimerWrapper = ({ phase, timeLeft }) => {
+  const timer = () => {
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft - minutes * 60;
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
 
@@ -24,9 +14,9 @@ const TimerWrapper = ({
 
   return (
     <StyledTimerWrapper>
-      <span id="timer-label">{phase === "Session" ? "Session" : "Break"}</span>
-      <span id="time-left">{timer(phase)}</span>
-      {phase === "Break" ? <span>Break has started</span> : null}
+      <span id="timer-label">{phase ? "Session" : "Break"}</span>
+      <span id="time-left">{timer()}</span>
+      {!phase ? <span>Break has started</span> : null}
     </StyledTimerWrapper>
   );
 };
