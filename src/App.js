@@ -13,7 +13,7 @@ import {
 } from "./components";
 
 function App() {
-  let [phase, setPhase] = useState("Session");
+  const [phase, setPhase] = useState("Session");
 
   const [sessionLength, setSessionLength] = useState(1500);
 
@@ -21,33 +21,21 @@ function App() {
 
   const [play, setPlay] = useState(false);
 
-  const phaseHandler = () => {
-    if (play && phase === "Session" && sessionLength === 0) {
-      setPhase((phase = "Break"));
-    } else if (phase === "Break" && breakLength === 0) {
-      setPhase((phase = "Session"));
-    }
-  };
-
   useEffect(() => {
-    phaseHandler();
-    let intervalTest;
-    const test = () => {
-      intervalTest = setInterval(() => {
+    const timer = setInterval(() => {
+      if (play) {
         if (phase === "Session") {
-          setSessionLength(sessionLength - 1);
+          setSessionLength(sL => sL - 1);
         } else {
-          setBreakLength(breakLength - 1);
+          setBreakLength(bL => bL - 1);
         }
-      }, 1000);
-    };
+      }
+    }, 1000);
 
-    if (play) {
-      test();
-    }
+    return () => clearInterval(timer);
+  }, [play, phase]);
 
-    return () => clearInterval(intervalTest);
-  });
+  console.log(play, sessionLength);
 
   return (
     <>
@@ -103,16 +91,7 @@ function App() {
           breakLength={breakLength}
         />
         <BottomControlsWrapper>
-          <Button
-            id="start_stop"
-            play={play}
-            setPlay={setPlay}
-            phase={phase}
-            sessionLength={sessionLength}
-            setSessionLength={setSessionLength}
-            breakLength={breakLength}
-            setBreakLength={setBreakLength}
-          >
+          <Button id="start_stop" play={play} setPlay={setPlay}>
             start/stop
           </Button>
           <Button id="pause" play={play} setPlay={setPlay}>

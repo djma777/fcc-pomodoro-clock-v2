@@ -3,10 +3,8 @@ import React from "react";
 import { StyledTimerWrapper } from "./TimerWrapper.styled";
 
 const TimerWrapper = ({
-  play,
-  setPlay,
   phase,
-  setPhase,
+
   sessionLength,
   breakLength
 }) => {
@@ -28,6 +26,7 @@ const TimerWrapper = ({
     <StyledTimerWrapper>
       <span id="timer-label">{phase === "Session" ? "Session" : "Break"}</span>
       <span id="time-left">{timer(phase)}</span>
+      {phase === "Break" ? <span>Break has started</span> : null}
     </StyledTimerWrapper>
   );
 };
