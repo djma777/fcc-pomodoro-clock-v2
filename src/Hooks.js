@@ -1,65 +1,92 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 let timerID;
 
-function useCountdownTimer(play, phase, setTimeLeft, pause) {
+export const useCountdownTimer = (play, setTimeLeft) => {
   useEffect(() => {
-    timerID = setInterval(() => {
-      if (play && !pause) {
-        setTimeLeft(tL => tL - 1);
-      }
-    }, 1000);
+    if (play) {
+      startCountdown(setTimeLeft);
+    }
 
     return () => clearInterval(timerID);
-  }, [play, phase, setTimeLeft]);
-}
+  });
+};
 
-function usePhaseShifter(play, setPlay, timeLeft, setShifting) {
-  useEffect(() => {
-    if (play && timeLeft === 0) {
-      setShifting(true);
-      clearInterval(timerID);
-    }
-  }, [play, setPlay, timeLeft, setShifting]);
-}
-
-function useTimeLeft(
-  timeLeft,
-  setTimeLeft,
+export const useTimeLeftShifter = (
   play,
   phase,
+  setTimeLeft,
   sessionLength,
-  breakLength,
-  shifting
-) {
+  breakLength
+) => {
   useEffect(() => {
-    if ((!play && shifting) || (!play && !shifting)) {
+    if (!play) {
       setTimeLeft(phase ? sessionLength : breakLength);
     }
-  }, [
-    timeLeft,
-    setTimeLeft,
-    play,
-    phase,
-    sessionLength,
-    breakLength,
-    shifting
-  ]);
-}
+  });
+};
 
-function useAbsoluteZero(shifting, setShifting, setPlay, setPhase, phase) {
+export const useShifter = (play, timeLeft, setShifting) => {
+  useEffect(() => {
+    if (play) {
+      if (timeLeft === 0) {
+        setShifting(true);
+      }
+    }
+
+    return;
+  });
+};
+
+export const useAbsoluteZero = (
+  shifting,
+  setShifting,
+  setPhase,
+  phase,
+  setTimeLeft,
+  sessionLength,
+  breakLength,
+  play,
+  isSession
+) => {
   useEffect(() => {
     let timeoutID;
-    if (shifting) {
+    if (play && shifting) {
+      clearInterval(timerID);
+
       timeoutID = setTimeout(() => {
+        setTimeLeft(isSession ? sessionLength : breakLength);
         setPhase(!phase);
-        setPlay(true);
         setShifting(false);
+
+        startCountdown(setTimeLeft);
       }, 1000);
     }
 
     return () => clearTimeout(timeoutID);
-  }, [shifting, setShifting, setPlay, setPhase, phase]);
-}
+  });
+};
 
-export { useCountdownTimer, useTimeLeft, usePhaseShifter, useAbsoluteZero };
+export const usePhaseToggler = (play, phase, shifting) => {
+  const [session, setSession] = useState(true);
+  useEffect(() => {
+    if (play && shifting) {
+      setSession(!phase);
+    }
+  }, [play, shifting, phase]);
+
+  return session;
+};
+
+export const usePause = pause => {
+  useEffect(() => {
+    if (pause) {
+      clearTimeout(timerID);
+    }
+  });
+};
+
+//HELPER FUNCTIONS
+function startCountdown(setTimeLeft) {
+  timerID = setInterval(() => setTimeLeft(tL => tL - 1), 1000);
+}

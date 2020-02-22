@@ -5,42 +5,24 @@ import { StyledButton } from "./Button.styled";
 const Button = ({
   children,
   id,
-  setBreakLength,
-  breakLength,
-  sessionLength,
-  setSessionLength,
-  play,
   setPlay,
-  setPhase,
-  setTimeLeft,
   pause,
-  setPause
+  setPause,
+  play,
+  handleReset
 }) => {
   const handleClick = e => {
     switch (id) {
       case "break-increment":
-        if (breakLength === 3600) return;
-        setBreakLength(breakLength + 60);
         break;
       case "break-decrement":
-        if (breakLength === 60) return;
-        setBreakLength(breakLength - 60);
         break;
       case "session-increment":
-        if (sessionLength === 3600) return;
-        setSessionLength(sessionLength + 60);
         break;
       case "session-decrement":
-        if (sessionLength === 60) return;
-        setSessionLength(sessionLength - 60);
         break;
       case "reset":
-        setSessionLength(1500);
-        setBreakLength(300);
-        setTimeLeft(1500);
-        setPhase(true);
-        setPlay(false);
-        setPause(false);
+        handleReset();
         break;
       case "start_stop":
         if (!play) {
@@ -48,11 +30,10 @@ const Button = ({
         } else {
           setPause(!pause);
         }
-
         break;
       case "pause":
-        if (!play) return;
-        setPause(!pause);
+        if (!play || pause) return;
+        setPause(true);
         break;
       default:
         return;
