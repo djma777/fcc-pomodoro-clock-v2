@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   useTimeLeftShifter,
@@ -6,7 +6,8 @@ import {
   useShifter,
   useAbsoluteZero,
   usePhaseToggler,
-  usePause
+  usePause,
+  useAlarm
 } from "./Hooks";
 
 import { GlobalStyles } from "./GlobalStyles";
@@ -18,12 +19,14 @@ import {
   TimerWrapper,
   BottomControlsWrapper,
   Button,
-  Footer
+  Footer,
+  Audio
 } from "./components";
 
 function App() {
-  const DEFAULT_SESSION_LENGTH = 10;
-  const DEFAULT_BREAK_LENGTH = 5;
+  const DEFAULT_SESSION_LENGTH = 1500;
+  const DEFAULT_BREAK_LENGTH = 300;
+  const audioRef = useRef();
 
   const [phase, setPhase] = useState(true);
 
@@ -40,6 +43,7 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(DEFAULT_SESSION_LENGTH);
 
   const isSession = usePhaseToggler(play, phase, shifting);
+  const isAlarm = useAlarm(audioRef, timeLeft);
 
   const handleReset = () => {
     setPhase(true);
@@ -67,7 +71,17 @@ function App() {
     isSession
   );
 
-  usePause(pause);
+  useEffect(() => {
+    let timeoutID;
+
+    if (isAlarm) {
+      timeoutID = setTimeout(() => {
+        audioRef.current.play();
+      }, 1000);
+    }
+
+    return () => clearTimeout(timeoutID);
+  });
 
   console.log(`
   phase = ${phase}
@@ -78,8 +92,11 @@ function App() {
   breakLength = ${breakLength}
   timeLeft = ${timeLeft}
   isSession = ${isSession}
+  audioRef = ${audioRef}
   
   `);
+
+  console.log(audioRef);
 
   return (
     <>
@@ -88,14 +105,38 @@ function App() {
         <Title>Pomodoro Clock</Title>
         <LengthControlsWrapper>
           <LengthControls id="break">
-            <Button id="break-decrement">down</Button>
+            <Button
+              id="break-decrement"
+              breakLength={breakLength}
+              setBreakLength={setBreakLength}
+            >
+              down
+            </Button>
             <span id="break-length">{Math.floor(breakLength / 60)}</span>
-            <Button id="break-increment">up</Button>
+            <Button
+              id="break-increment"
+              breakLength={breakLength}
+              setBreakLength={setBreakLength}
+            >
+              up
+            </Button>
           </LengthControls>
           <LengthControls id="session" length={sessionLength}>
-            <Button>down</Button>
+            <Button
+              id="session-decrement"
+              sessionLength={sessionLength}
+              setSessionLength={setSessionLength}
+            >
+              down
+            </Button>
             <span id="session-length">{Math.floor(sessionLength / 60)}</span>
-            <Button id="session-increment">up</Button>
+            <Button
+              id="session-increment"
+              sessionLength={sessionLength}
+              setSessionLength={setSessionLength}
+            >
+              up
+            </Button>
           </LengthControls>
         </LengthControlsWrapper>
         <TimerWrapper play={play} phase={phase} timeLeft={timeLeft} />
@@ -118,6 +159,7 @@ function App() {
         </BottomControlsWrapper>
       </AppWrapper>
       <Footer />
+      <Audio audioRef={audioRef} timeLeft={timeLeft} />
     </>
   );
 }

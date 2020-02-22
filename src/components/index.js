@@ -6,3 +6,4 @@ export { TimerWrapper } from "./TimerWrapper";
 export { BottomControlsWrapper } from "./BottomControlsWrapper";
 export { Footer } from "./Footer";
 export { Button } from "./Button";
+export { Audio } from "./Audio";

@@ -9,17 +9,29 @@ const Button = ({
   pause,
   setPause,
   play,
-  handleReset
+  handleReset,
+  breakLength,
+  setBreakLength,
+  sessionLength,
+  setSessionLength
 }) => {
   const handleClick = e => {
     switch (id) {
       case "break-increment":
+        if (breakLength > 3540) return;
+        setBreakLength(breakLength + 60);
         break;
       case "break-decrement":
+        if (breakLength < 120) return;
+        setBreakLength(breakLength - 60);
         break;
       case "session-increment":
+        if (sessionLength > 3540) return;
+        setSessionLength(sessionLength + 60);
         break;
       case "session-decrement":
+        if (sessionLength < 120) return;
+        setSessionLength(sessionLength - 60);
         break;
       case "reset":
         handleReset();

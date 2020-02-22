@@ -86,7 +86,24 @@ export const usePause = pause => {
   });
 };
 
+export const useAlarm = (audioRef, timeLeft) => {
+  const [alarm, setAlarm] = useState(false);
+  useEffect(() => {
+    if (timeLeft < 1) {
+      setAlarm(true);
+    }
+  });
+
+  return alarm;
+};
+
+export const useStopAlarm = () => {};
+
 //HELPER FUNCTIONS
 function startCountdown(setTimeLeft) {
   timerID = setInterval(() => setTimeLeft(tL => tL - 1), 1000);
+}
+
+function stopAlarm(audioRef) {
+  audioRef.current.pause();
 }
