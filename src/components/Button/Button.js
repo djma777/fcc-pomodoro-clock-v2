@@ -11,40 +11,48 @@ const Button = ({
   setSessionLength,
   play,
   setPlay,
-  setPhase
+  setPhase,
+  setTimeLeft,
+  pause,
+  setPause
 }) => {
   const handleClick = e => {
     switch (id) {
       case "break-increment":
-        if (play || breakLength === 3600) return;
+        if (breakLength === 3600) return;
         setBreakLength(breakLength + 60);
         break;
       case "break-decrement":
-        if (play) return;
         if (breakLength === 60) return;
         setBreakLength(breakLength - 60);
         break;
       case "session-increment":
-        if (play || sessionLength === 3600) return;
+        if (sessionLength === 3600) return;
         setSessionLength(sessionLength + 60);
         break;
       case "session-decrement":
-        if (play) return;
         if (sessionLength === 60) return;
         setSessionLength(sessionLength - 60);
         break;
       case "reset":
         setSessionLength(1500);
         setBreakLength(300);
+        setTimeLeft(1500);
         setPhase(true);
         setPlay(false);
+        setPause(false);
         break;
       case "start_stop":
-        setPlay(!play);
+        if (!play) {
+          setPlay(true);
+        } else {
+          setPause(!pause);
+        }
+
         break;
       case "pause":
         if (!play) return;
-        setPlay((play = false));
+        setPause(!pause);
         break;
       default:
         return;

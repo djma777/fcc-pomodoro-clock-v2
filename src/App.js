@@ -28,22 +28,33 @@ function App() {
 
   const [play, setPlay] = useState(false);
 
+  const [pause, setPause] = useState(false);
+
   const [timeLeft, setTimeLeft] = useState(1500);
 
   const [shifting, setShifting] = useState(false);
 
-  useCountdownTimer(play, phase, setTimeLeft);
-  useTimeLeft(timeLeft, setTimeLeft, play, phase, sessionLength, breakLength);
-  usePhaseShifter(phase, setPhase, play, setPlay, timeLeft, setShifting);
-
-  useAbsoluteZero(shifting, setShifting, setPlay);
-
-  console.log(
-    "phase " + phase,
-    "play " + play,
-    "sessionLength " + sessionLength,
-    "timeLeft " + timeLeft
+  useCountdownTimer(play, phase, setTimeLeft, pause);
+  useTimeLeft(
+    timeLeft,
+    setTimeLeft,
+    play,
+    phase,
+    sessionLength,
+    breakLength,
+    shifting
   );
+  usePhaseShifter(play, setPlay, timeLeft, setShifting);
+
+  useAbsoluteZero(shifting, setShifting, setPlay, setPhase, phase);
+
+  console.log(`
+  phase = ${phase}
+  play = ${play}
+  timeLeft = ${timeLeft}
+  shifting = ${shifting}
+  pause = ${pause}
+  `);
 
   return (
     <>
@@ -100,10 +111,16 @@ function App() {
           timeLeft={timeLeft}
         />
         <BottomControlsWrapper>
-          <Button id="start_stop" play={play} setPlay={setPlay}>
+          <Button
+            id="start_stop"
+            play={play}
+            setPlay={setPlay}
+            pause={pause}
+            setPause={setPause}
+          >
             start/stop
           </Button>
-          <Button id="pause" play={play} setPlay={setPlay}>
+          <Button id="pause" play={play} pause={pause} setPause={setPause}>
             pause
           </Button>
           <Button
@@ -113,6 +130,8 @@ function App() {
             setPlay={setPlay}
             play={play}
             setPhase={setPhase}
+            setTimeLeft={setTimeLeft}
+            setPause={setPause}
           >
             reset
           </Button>

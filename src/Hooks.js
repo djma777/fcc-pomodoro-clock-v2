@@ -1,15 +1,26 @@
 import { useEffect } from "react";
 
-function useCountdownTimer(play, phase, setTimeLeft) {
+let timerID;
+
+function useCountdownTimer(play, phase, setTimeLeft, pause) {
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (play) {
+    timerID = setInterval(() => {
+      if (play && !pause) {
         setTimeLeft(tL => tL - 1);
       }
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => clearInterval(timerID);
   }, [play, phase, setTimeLeft]);
+}
+
+function usePhaseShifter(play, setPlay, timeLeft, setShifting) {
+  useEffect(() => {
+    if (play && timeLeft === 0) {
+      setShifting(true);
+      clearInterval(timerID);
+    }
+  }, [play, setPlay, timeLeft, setShifting]);
 }
 
 function useTimeLeft(
@@ -18,42 +29,37 @@ function useTimeLeft(
   play,
   phase,
   sessionLength,
-  breakLength
+  breakLength,
+  shifting
 ) {
   useEffect(() => {
-    if (!play) {
+    if ((!play && shifting) || (!play && !shifting)) {
       setTimeLeft(phase ? sessionLength : breakLength);
     }
-  }, [timeLeft, setTimeLeft, play, phase, sessionLength, breakLength]);
+  }, [
+    timeLeft,
+    setTimeLeft,
+    play,
+    phase,
+    sessionLength,
+    breakLength,
+    shifting
+  ]);
 }
 
-function usePhaseShifter(
-  phase,
-  setPhase,
-  play,
-  setPlay,
-  timeLeft,
-  setShifting
-) {
-  if (play && timeLeft === 0) {
-    setShifting(true);
-    setPlay(false);
-    setPhase(!phase);
-  }
-}
-
-function useAbsoluteZero(shifting, setShifting, setPlay) {
+function useAbsoluteZero(shifting, setShifting, setPlay, setPhase, phase) {
   useEffect(() => {
     let timeoutID;
     if (shifting) {
       timeoutID = setTimeout(() => {
+        setPhase(!phase);
         setPlay(true);
         setShifting(false);
       }, 1000);
     }
 
     return () => clearTimeout(timeoutID);
-  }, [shifting, setShifting, setPlay]);
+  }, [shifting, setShifting, setPlay, setPhase, phase]);
 }
 
 export { useCountdownTimer, useTimeLeft, usePhaseShifter, useAbsoluteZero };
