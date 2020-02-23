@@ -44,20 +44,8 @@ function App() {
 
   const isSession = usePhaseToggler(play, phase, shifting);
 
-  const handleReset = () => {
-    setPhase(true);
-    setPlay(false);
-    setPause(false);
-    setShifting(false);
-    setSessionLength(DEFAULT_SESSION_LENGTH);
-    setBreakLength(DEFAULT_BREAK_LENGTH);
-    setTimeLeft(DEFAULT_SESSION_LENGTH);
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-  };
-
-  useTimeLeftShifter(play, phase, setTimeLeft, sessionLength, breakLength);
   useCountdownTimer(play, setTimeLeft);
+  useTimeLeftShifter(play, phase, setTimeLeft, sessionLength, breakLength);
 
   useShifter(play, timeLeft, setShifting);
   useAbsoluteZero(
@@ -74,6 +62,17 @@ function App() {
 
   useAlarm(audioRef, timeLeft);
   usePause(pause);
+  const handleReset = () => {
+    setPhase(true);
+    setPlay(false);
+    setPause(false);
+    setShifting(false);
+    setSessionLength(DEFAULT_SESSION_LENGTH);
+    setBreakLength(DEFAULT_BREAK_LENGTH);
+    setTimeLeft(DEFAULT_SESSION_LENGTH);
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  };
 
   console.log(`
   phase = ${phase}
@@ -132,6 +131,7 @@ function App() {
           </LengthControls>
         </LengthControlsWrapper>
         <TimerWrapper play={play} phase={phase} timeLeft={timeLeft} />
+
         <BottomControlsWrapper>
           <Button
             id="start_stop"
