@@ -6,7 +6,8 @@ import {
   useShifter,
   useAbsoluteZero,
   usePhaseToggler,
-  useAlarm
+  useAlarm,
+  usePause
 } from "./Hooks";
 
 import { GlobalStyles } from "./GlobalStyles";
@@ -72,6 +73,7 @@ function App() {
   );
 
   useAlarm(audioRef, timeLeft);
+  usePause(pause);
 
   console.log(`
   phase = ${phase}
