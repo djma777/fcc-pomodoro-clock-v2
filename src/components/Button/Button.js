@@ -18,7 +18,7 @@ const Button = ({
   const handleClick = e => {
     switch (id) {
       case "break-increment":
-        if (breakLength > 3540) return;
+        if (breakLength === 60 * 60) return;
         setBreakLength(breakLength + 60);
         break;
       case "break-decrement":
@@ -26,7 +26,7 @@ const Button = ({
         setBreakLength(breakLength - 60);
         break;
       case "session-increment":
-        if (sessionLength > 3540) return;
+        if (sessionLength === 60 * 60) return;
         setSessionLength(sessionLength + 60);
         break;
       case "session-decrement":

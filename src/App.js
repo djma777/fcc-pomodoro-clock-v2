@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 
 import {
   useTimeLeftShifter,
@@ -6,7 +6,6 @@ import {
   useShifter,
   useAbsoluteZero,
   usePhaseToggler,
-  usePause,
   useAlarm
 } from "./Hooks";
 
@@ -43,7 +42,6 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(DEFAULT_SESSION_LENGTH);
 
   const isSession = usePhaseToggler(play, phase, shifting);
-  const isAlarm = useAlarm(audioRef, timeLeft);
 
   const handleReset = () => {
     setPhase(true);
@@ -53,6 +51,8 @@ function App() {
     setSessionLength(DEFAULT_SESSION_LENGTH);
     setBreakLength(DEFAULT_BREAK_LENGTH);
     setTimeLeft(DEFAULT_SESSION_LENGTH);
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
   };
 
   useTimeLeftShifter(play, phase, setTimeLeft, sessionLength, breakLength);
@@ -71,17 +71,7 @@ function App() {
     isSession
   );
 
-  useEffect(() => {
-    let timeoutID;
-
-    if (isAlarm) {
-      timeoutID = setTimeout(() => {
-        audioRef.current.play();
-      }, 1000);
-    }
-
-    return () => clearTimeout(timeoutID);
-  });
+  useAlarm(audioRef, timeLeft);
 
   console.log(`
   phase = ${phase}
@@ -92,7 +82,7 @@ function App() {
   breakLength = ${breakLength}
   timeLeft = ${timeLeft}
   isSession = ${isSession}
-  audioRef = ${audioRef}
+  audioRef = ${audioRef.current}
   
   `);
 

@@ -4,7 +4,7 @@ import alarm from "../../assets/alarm.mp3";
 
 const Audio = ({ audioRef }) => {
   return (
-    <audio ref={audioRef}>
+    <audio id="beep" ref={audioRef}>
       <source src={alarm} type="audio/mpeg" />
     </audio>
   );

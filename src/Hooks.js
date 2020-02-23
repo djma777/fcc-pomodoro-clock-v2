@@ -87,14 +87,11 @@ export const usePause = pause => {
 };
 
 export const useAlarm = (audioRef, timeLeft) => {
-  const [alarm, setAlarm] = useState(false);
   useEffect(() => {
-    if (timeLeft < 1) {
-      setAlarm(true);
+    if (timeLeft === 0) {
+      audioRef.current.play();
     }
   });
-
-  return alarm;
 };
 
 export const useStopAlarm = () => {};
