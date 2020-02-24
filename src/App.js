@@ -156,20 +156,20 @@ function App() {
         <LengthControlsWrapper>
           <LengthControls id="break">
             <Button id="break-decrement" handleClick={handleClick}>
-              down
+              <i className="fas fa-arrow-alt-circle-down fa-2x"></i>
             </Button>
             <span id="break-length">{Math.floor(breakLength / 60)}</span>
             <Button id="break-increment" handleClick={handleClick}>
-              &#11014;
+              &#9195;
             </Button>
           </LengthControls>
           <LengthControls id="session" length={sessionLength}>
             <Button id="session-decrement" handleClick={handleClick}>
-              down
+              <i className="fas fa-arrow-alt-circle-down fa-2x"></i>
             </Button>
             <span id="session-length">{Math.floor(sessionLength / 60)}</span>
             <Button id="session-increment" handleClick={handleClick}>
-              up
+              <i className="fas fa-arrow-alt-circle-up fa-2x"></i>
             </Button>
           </LengthControls>
         </LengthControlsWrapper>
@@ -177,7 +177,11 @@ function App() {
 
         <BottomControlsWrapper>
           <Button id="start_stop" handleClick={handleClick}>
-            start/stop
+            {!play ? (
+              <i className="fas fa-pause"></i>
+            ) : (
+              <i className="fas fa-play"></i>
+            )}
           </Button>
           <Button id="pause" handleClick={handleClick}>
             pause

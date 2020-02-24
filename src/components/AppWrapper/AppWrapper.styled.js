@@ -6,6 +6,4 @@ export const StyledAppWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  padding: 10rem;
 `;
