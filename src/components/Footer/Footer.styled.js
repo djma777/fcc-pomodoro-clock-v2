@@ -5,5 +5,13 @@ export const StyledFooter = styled.footer`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: lightgoldenrodyellow;
+
+  #author {
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  a {
+    color: green;
+  }
 `;

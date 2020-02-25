@@ -9,10 +9,16 @@ export const GlobalStyles = createGlobalStyle`
 
     body {
         font-family: 'Poppins', sans-serif;
+        color: #302d2d;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
+        
+    }
+
+    button > * {
+        pointer-events: none;
     }
 `;

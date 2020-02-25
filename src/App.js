@@ -155,43 +155,53 @@ function App() {
         <Title>Pomodoro Clock</Title>
         <LengthControlsWrapper>
           <LengthControls id="break">
-            <Button id="break-decrement" handleClick={handleClick}>
-              <i className="fas fa-arrow-alt-circle-down fa-2x"></i>
+            <Button id="break-increment" handleClick={handleClick}>
+              <span role="img" aria-label="" aria-labelledby="">
+                ⬆️
+              </span>
             </Button>
             <span id="break-length">{Math.floor(breakLength / 60)}</span>
-            <Button id="break-increment" handleClick={handleClick}>
-              &#9195;
+            <Button id="break-decrement" handleClick={handleClick}>
+              <span role="img" aria-label="" aria-labelledby="">
+                ⬇️
+              </span>
             </Button>
           </LengthControls>
+          <TimerWrapper play={play} phase={phase} timeLeft={timeLeft} />
           <LengthControls id="session" length={sessionLength}>
-            <Button id="session-decrement" handleClick={handleClick}>
-              <i className="fas fa-arrow-alt-circle-down fa-2x"></i>
+            <Button id="session-increment" handleClick={handleClick}>
+              <span role="img" aria-label="" aria-labelledby="">
+                ⬆️
+              </span>
             </Button>
             <span id="session-length">{Math.floor(sessionLength / 60)}</span>
-            <Button id="session-increment" handleClick={handleClick}>
-              <i className="fas fa-arrow-alt-circle-up fa-2x"></i>
+            <Button id="session-decrement" handleClick={handleClick}>
+              <span role="img" aria-label="" aria-labelledby="">
+                ⬇️
+              </span>
             </Button>
           </LengthControls>
         </LengthControlsWrapper>
-        <TimerWrapper play={play} phase={phase} timeLeft={timeLeft} />
-
         <BottomControlsWrapper>
           <Button id="start_stop" handleClick={handleClick}>
-            {!play ? (
-              <i className="fas fa-pause"></i>
-            ) : (
-              <i className="fas fa-play"></i>
-            )}
+            <span role="img" aria-label="" aria-labelledby="">
+              ⏯️
+            </span>
           </Button>
           <Button id="pause" handleClick={handleClick}>
-            pause
+            <span role="img" aria-label="" aria-labelledby="">
+              ⏸️
+            </span>
           </Button>
           <Button id="reset" handleClick={handleClick}>
-            reset
+            <span role="img" aria-label="" aria-labelledby="">
+              🔄
+            </span>
           </Button>
         </BottomControlsWrapper>
+        <Footer />
       </AppWrapper>
-      <Footer />
+
       <Audio audioRef={audioRef} timeLeft={timeLeft} />
     </>
   );

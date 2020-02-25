@@ -3,7 +3,12 @@ import styled from "styled-components";
 export const StyledLengthControlsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  width: 100%;
+
+  width: 30rem;
+  height: 30rem;
+  border-radius: 50%;
+
+  border: 2px solid black;
 `;

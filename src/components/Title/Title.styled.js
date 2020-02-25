@@ -5,7 +5,6 @@ export const StyledTitle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: lightsalmon;
 
   h1 {
     text-align: center;
