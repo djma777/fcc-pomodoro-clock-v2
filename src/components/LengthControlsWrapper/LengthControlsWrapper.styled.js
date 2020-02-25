@@ -10,5 +10,5 @@ export const StyledLengthControlsWrapper = styled.div`
   height: 30rem;
   border-radius: 50%;
 
-  border: 2px solid black;
+  border: 2px solid #302d2d;
 `;

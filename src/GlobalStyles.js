@@ -10,6 +10,7 @@ export const GlobalStyles = createGlobalStyle`
     body {
         font-family: 'Poppins', sans-serif;
         color: #302d2d;
+        background-color: #c9cfd1;
         display: flex;
         flex-direction: column;
         justify-content: center;
