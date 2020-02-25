@@ -11,6 +11,7 @@ const Footer = () => {
           href="https://www.freecodecamp.org"
           alt="link to freecodecamp.org"
           target="_blank"
+          rel="noopener noreferrer"
         >
           freeCodeCamp.org
         </a>{" "}

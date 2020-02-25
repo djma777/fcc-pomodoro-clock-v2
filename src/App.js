@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import {} from "./Hooks";
-
 import { GlobalStyles } from "./GlobalStyles";
 import {
   AppWrapper,
@@ -23,18 +21,19 @@ function App() {
   const audioRef = useRef();
 
   const [phase, setPhase] = useState(true);
+  const [sessionLength, setSessionLength] = useState(DEFAULT_SESSION_LENGTH);
+  const [breakLength, setBreakLength] = useState(DEFAULT_BREAK_LENGTH);
+  const [timeLeft, setTimeLeft] = useState(DEFAULT_SESSION_LENGTH);
   useEffect(() => {
     if (phase) {
       setTimeLeft(sessionLength);
     } else {
       setTimeLeft(breakLength);
     }
-  }, [phase]);
+  }, [phase, breakLength, sessionLength]);
 
   const [play, setPlay] = useState(false);
-
   const [pause, setPause] = useState(false);
-
   const [shifting, setShifting] = useState(false);
   useEffect(() => {
     if (shifting) {
@@ -48,11 +47,6 @@ function App() {
     }
   });
 
-  const [sessionLength, setSessionLength] = useState(DEFAULT_SESSION_LENGTH);
-
-  const [breakLength, setBreakLength] = useState(DEFAULT_BREAK_LENGTH);
-
-  const [timeLeft, setTimeLeft] = useState(DEFAULT_SESSION_LENGTH);
   useEffect(() => {
     if (timeLeft === 0) {
       stopTime();
